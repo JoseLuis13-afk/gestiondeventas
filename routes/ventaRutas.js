@@ -49,4 +49,37 @@ rutas.delete('/eliminar/:id', async (req, res) =>{
         res.status(404).json({mensaje: error.message});
     }
 });
+
+//Consultas
+// Búsqueda de ventas de tortas por sabor específico
+rutas.get('/ventas-por-sabor/:sabor', async (req, res) => {
+    try {
+        const ventasPorSabor = await VentasModel.find({ sabor: req.params.sabor });
+        res.json(ventasPorSabor);
+    } catch (error) {
+        res.status(404).json({ mensaje: error.message });
+    }
+});
+// Búsqueda de ventas de tortas ordenadas por precio de forma descendente
+rutas.get('/ventas-ordenadas', async (req, res) => {
+    try {
+        const ventasOrdenadas = await VentasModel.find().sort({ precio: -1 });
+        res.json(ventasOrdenadas);
+    } catch (error) {
+        res.status(404).json({ mensaje: error.message });
+    }
+});
+// Búsqueda de ventas de tortas con un sabor específico y un tamaño determinado
+rutas.get('/ventas-filtradas', async (req, res) => {
+    try {
+        const ventasFiltradas = await VentasModel.find({ sabor: 'Chocolate', tamaño: 'Grande' });
+        res.json(ventasFiltradas);
+    } catch (error) {
+        res.status(404).json({ mensaje: error.message });
+    }
+});
+
+
+
+/////////////////////
 module.exports=rutas;
